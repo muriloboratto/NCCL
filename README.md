@@ -13,9 +13,13 @@ Collective Operations
 At present, the library implements the following collectives operations:
 
 all-reduce
+
 all-gather
+
 reduce-scatter
+
 reduce
+
 broadcast
 
 
