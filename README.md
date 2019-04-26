@@ -1,10 +1,10 @@
-# NCCL (NVIDIA Collective Communication Library)
+# Sample Codes using NCCL on Multi-GPU
 
 ----
 ## What is NCCL?
 see [NVIDIA](https://docs.nvidia.com/deeplearning/sdk/nccl-developer-guide/docs/index.html)
 
-> NCCL is a A sample of how to call collective operation functions on multi-GPU. A simple example of using broadcast, reduce, allGather, reduceScatter operations.
+> NCCL (NVIDIA Collective Communication Library) is a A sample of how to call collective operation functions on multi-GPU. A simple example of using broadcast, reduce, allGather, reduceScatter operations.
 
 ----
 
