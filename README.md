@@ -1,4 +1,4 @@
-# NCCL(NVIDIA Collective Communication Library)
+# NCCL (NVIDIA Collective Communication Library)
 
 ----
 ## What is NCCL?
