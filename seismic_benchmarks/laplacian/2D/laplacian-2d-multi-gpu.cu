@@ -180,9 +180,9 @@ double t1 = omp_get_wtime();
         cudaSetDevice(DeviceList[myid]);
 
         cudaMalloc(&device_a[myid],  n  * n * sizeof(double));  
-	    cudaMalloc(&device_c[myid],  n  * n * sizeof(double));     
-	    cudaMalloc(&stencil[myid],   n  * n * sizeof(double));     
-	    cudaMalloc(&Solution_reduced_device[myid],  n  * n * sizeof(double));     
+	cudaMalloc(&device_c[myid],  n  * n * sizeof(double));     
+	cudaMalloc(&stencil[myid],   n  * n * sizeof(double));     
+	cudaMalloc(&Solution_reduced_device[myid],  n  * n * sizeof(double));     
   
         cudaMemcpy(device_a[myid], host_a,   n * n * sizeof(double), cudaMemcpyHostToDevice) ;
  
@@ -296,7 +296,7 @@ ncclGroupEnd();
 
      freeMemoryApp(DeviceList, s, comms, device_a, device_c, Solution_reduced_device, stencil, nGPUs);
 
-double t2 = omp_get_wtime();
+     double t2 = omp_get_wtime();
 
      #ifdef printTime
        	printf("%d\t%1.2f\n", n, t2 - t1);
