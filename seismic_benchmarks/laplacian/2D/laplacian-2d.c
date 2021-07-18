@@ -70,14 +70,14 @@ void show_vector(int *a, int n){
 
 void PARA_RANGE_1(int n1,int n2, int nprocs, int myid, int jsta, int jend, int *vector_return){
 
-	int iwork1 = (n2 - n1 + 1) / nprocs;
-	int iwork2 = (n2 - n1 + 1) % nprocs;
+   int iwork1 = (n2 - n1 + 1) / nprocs;
+   int iwork2 = (n2 - n1 + 1) % nprocs;
 
-	jsta   = (myid * iwork1) + n1 + fmin((double)myid, (double)iwork2);
-	jend   = jsta + iwork1 - 1;
+   jsta   = (myid * iwork1) + n1 + fmin((double)myid, (double)iwork2);
+   jend   = jsta + iwork1 - 1;
 
-	if (iwork2 > myid)
-	 jend = jend + 1;
+   if (iwork2 > myid)
+    jend = jend + 1;
 
    vector_return[0] = jsta;
    vector_return[1] = jend;
@@ -101,13 +101,13 @@ int main(int argc, char *argv[]){
 
    dx = 1; dz = 1;
 
-	myid = 0;
+   myid = 0;
    nprocs = 1;
 
-	PARA_RANGE_1(1, n, nprocs, myid, jsta, jend, vector_return);
+   PARA_RANGE_1(1, n, nprocs, myid, jsta, jend, vector_return);
 
-	jsta = vector_return[0];
-	jend = vector_return[1];
+   jsta = vector_return[0];
+   jend = vector_return[1];
 
    jsta2 = jsta;
    jend2 = jend;
@@ -116,9 +116,9 @@ int main(int argc, char *argv[]){
    jend2 = n - 1;
 	
    /*Population of the matrix*/
-	for(i = 0; i < m; i++)
-	  for(j = jsta-1; j < jend; j++)
-	    a[i + j* n] = (i + j + 2) * 1.;  /*stored dates in column (major column)*/
+   for(i = 0; i < m; i++)
+     for(j = jsta-1; j < jend; j++)
+	a[i + j* n] = (i + j + 2) * 1.;  /*stored dates in column (major column)*/
 
    show_matrix(a, n);
        
