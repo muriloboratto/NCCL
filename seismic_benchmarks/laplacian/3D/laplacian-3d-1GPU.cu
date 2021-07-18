@@ -100,93 +100,93 @@ void PARA_RANGE_1(int n1,int n2, int nprocs, int myid,  int *vector_return){
 	if (iwork2 > myid)
 	 iend = iend + 1;
 
-        vector_return[0] = ista;
-        vector_return[1] = iend;
+  vector_return[0] = ista;
+  vector_return[1] = iend;
 
-        printf("%d\t%d\n",vector_return[0], vector_return[1]);
+  printf("%d\t%d\n",vector_return[0], vector_return[1]);
        
 } /*PARA_RANGE_1*/
 
 
 int main(int argc, char *argv[]){
     
-    int nx = 8; 
-    int myid;
-    int nprocs;
-    int ny, nz;
-    double *a, *c;
-    double dx, dy, dz;
-    int ista, iend, ista2, iend2;
-    int i, j, k;
-    int *vector_return = (int *) calloc (2, sizeof(int));
+  int nx = 8; 
+  int myid;
+  int nprocs;
+  int ny, nz;
+  double *a, *c;
+  double dx, dy, dz;
+  int ista, iend, ista2, iend2;
+  int i, j, k;
+  int *vector_return = (int *) calloc (2, sizeof(int));
         
-    myid = 0; 	 
-    nprocs = 1;
+  myid = 0; 	 
+  nprocs = 1;
 
-    ny = nz = nx;
+  ny = nz = nx;
       
-    a  =  (double*) calloc (nz * nx * ny, sizeof(double));
-    c  =  (double*) calloc (nz * nx * ny, sizeof(double));
+  a  =  (double*) calloc (nz * nx * ny, sizeof(double));
+  c  =  (double*) calloc (nz * nx * ny, sizeof(double));
 
-    dx = 1.; dy = 1.; dz = 1.;
+  dx = 1.; dy = 1.; dz = 1.;
 	         
-    PARA_RANGE_1(1, nz, nprocs, myid, vector_return);
+  PARA_RANGE_1(1, nz, nprocs, myid, vector_return);
 
 	ista = vector_return[0];
 	iend = vector_return[1];
 
-    ista2 = ista;
+  ista2 = ista;
 	iend2 = iend;
 
 	if(myid == 0)
 	   ista2 = 2;
 
-    if(myid == (nprocs - 1))
+  if(myid == (nprocs - 1))
 	   iend2 = nz - 1;
 
-    /*Population the matrix*/
-    for(k = 0; k < ny; k++)
-	   for(j = 0; j < nx; j++)
-    	     for(i = ista - 1; i < iend; i++)    
-                  a[i + j*ny + k*(nx*ny)] = (i + j + 2) * 1.;  /*stored dates in column*/
+  /*Population the matrix*/
+  for(k = 0; k < ny; k++)
+	  for(j = 0; j < nx; j++)
+    	  for(i = ista - 1; i < iend; i++)    
+          a[i + j*ny + k*(nx*ny)] = (i + j + 2) * 1.;  /*stored dates in column*/
 
-    show_matrix_3D(a, ny); 
+  show_matrix_3D(a, ny); 
 
-    printf("\n---------------------------------------------------------------\n\n");
+  printf("\n---------------------------------------------------------------\n\n");
 
 
-    /*Alloc Device's Variables*/ 
-    double *d_a;
+  /*Alloc Device's Variables*/ 
+  double *d_a;
  	double *d_c;
  
-    cudaMalloc((void **) &d_a,  nx * ny * nz * sizeof(double));
-    cudaMalloc((void **) &d_c,  nx * ny * nz * sizeof(double));
+  cudaMalloc((void **) &d_a,  nx * ny * nz * sizeof(double));
+  cudaMalloc((void **) &d_c,  nx * ny * nz * sizeof(double));
 
 	cudaMemset(d_a, 0, nx * ny * nz * sizeof(double));
 	cudaMemset(d_c, 0, nx * ny * nz * sizeof(double));
 
-    /*Copy Matrix 'a' from host to device*/
-    cudaMemcpy(d_a, a, nx * ny * nz * sizeof(double), cudaMemcpyHostToDevice );
+  /*Copy Matrix 'a' from host to device*/
+  cudaMemcpy(d_a, a, nx * ny * nz * sizeof(double), cudaMemcpyHostToDevice );
 
-    /* 3D GRID and SIZEBLOCK definitions*/
-    int  sizeblock = nx / 2;
-    int grid = (int) ceil( (double) nx / (double) sizeblock );
-    dim3 dimGrid( grid, grid, grid );
-    dim3 dimBlock(sizeblock, sizeblock, sizeblock);
+  /* 3D GRID and SIZEBLOCK definitions*/
+  int  sizeblock = nx / 2;
+  int grid = (int) ceil( (double) nx / (double) sizeblock );
+  dim3 dimGrid( grid, grid, grid );
+  dim3 dimBlock(sizeblock, sizeblock, sizeblock);
        
     kernel<<< dimGrid, dimBlock >>>(d_a, d_c, nx, ny, nz, ista2, iend2, dx, dy, dz);
 
-    /*Copy Matrix 'd_c' from device to host*/
-    cudaMemcpy(c , d_c, nx * ny * nz * sizeof(double), cudaMemcpyDeviceToHost );
+  /*Copy Matrix 'd_c' from device to host*/
+  cudaMemcpy(c , d_c, nx * ny * nz * sizeof(double), cudaMemcpyDeviceToHost );
 
-    show_matrix_3D(c, nz); 
+  show_matrix_3D(c, nz); 
 
-    free(a);
-    free(c);
+  free(a);
+  free(c);
 
-    cudaFree(d_a) ;
-    cudaFree(d_c) ;
+  cudaFree(d_a) ;
+  cudaFree(d_c) ;
     
-    return 0;
+  return 0;
 
 }/*main*/

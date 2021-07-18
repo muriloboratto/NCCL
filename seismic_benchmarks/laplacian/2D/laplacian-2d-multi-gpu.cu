@@ -99,7 +99,7 @@ void SUPER_PARA_RANGE(int n, int nprocs, int myid, int *vector_return, double *h
 void freeMemoryApp(int *DeviceList, cudaStream_t *s, ncclComm_t *comms, double **device_a, double **device_c, 
                    double **Solution_reduced_device, double **stencil, int nGPUs){
 
-    	for(int g = 0; g < nGPUs; g++){ 
+    	  for(int g = 0; g < nGPUs; g++){ 
       	 cudaSetDevice(DeviceList[g]);
          cudaStreamSynchronize(s[g]);
         }
@@ -180,9 +180,9 @@ double t1 = omp_get_wtime();
         cudaSetDevice(DeviceList[myid]);
 
         cudaMalloc(&device_a[myid],  n  * n * sizeof(double));  
-	cudaMalloc(&device_c[myid],  n  * n * sizeof(double));     
-	cudaMalloc(&stencil[myid],   n  * n * sizeof(double));     
-	cudaMalloc(&Solution_reduced_device[myid],  n  * n * sizeof(double));     
+	      cudaMalloc(&device_c[myid],  n  * n * sizeof(double));     
+	      cudaMalloc(&stencil[myid],   n  * n * sizeof(double));     
+	      cudaMalloc(&Solution_reduced_device[myid],  n  * n * sizeof(double));     
   
         cudaMemcpy(device_a[myid], host_a,   n * n * sizeof(double), cudaMemcpyHostToDevice) ;
  
@@ -264,7 +264,7 @@ ncclGroupStart();
         PARA_RANGE(1, n, nGPUs, myid, vector_return);
 
         int jsta = vector_return[0];
-	    int jend = vector_return[1] + 1;
+	      int jend = vector_return[1] + 1;
  
         if(myid == 0)
 	      jsta = 2;
