@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
   MPI_Comm_size (MPI_COMM_WORLD, &size);  
        
   /*Usage*/ 
-  if( (argc < 2) && (rank == 0)) {
+  if((argc < 2) && (rank == 0)) {
      printf("Usage:\n");
      printf("mpirun -np [number of processors] %s [size problem]\n", argv[0]);
      exit(-1);
@@ -65,8 +65,11 @@ int main(int argc, char* argv[]) {
       result = result + x[i] * y[i]; 
   }        
 
-  print_vector(x, data_size);
-  print_vector(y, data_size);
+  if(rank == 0 || rank){
+    printf("Rank %d\n", rank);
+    print_vector(x, data_size);
+    print_vector(y, data_size);
+  }
 
   MPI_Reduce(&result, &result_f, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);   
          

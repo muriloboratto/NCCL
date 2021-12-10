@@ -100,18 +100,18 @@ int main(int argc, char* argv[]){
   ncclGroupStart();
         
         for(int g = 0; g < nGPUs; g++) {
-   	   cudaSetDevice(g);
-           ncclAllGather(sendbuff[g] + g, recvbuff[g], sendcount, ncclFloat, comms[g], s[g]); /*All Gathering the data on GPUs*/
+   	      cudaSetDevice(g);
+          ncclAllGather(sendbuff[g] + g, recvbuff[g], sendcount, ncclFloat, comms[g], s[g]); /*All Gathering the data on GPUs*/
         }
 
   ncclGroupEnd();
 
 
   for(int g = 0; g < nGPUs; g++) {
-      cudaSetDevice(g); 
-      printf("\nThis is device %d\n", g);
-      Dev_print <<< 1, size >>> (recvbuff[g]); /*Call the CUDA Kernel: Print vector on GPUs*/
-      cudaDeviceSynchronize();    
+    cudaSetDevice(g); 
+    printf("\nThis is device %d\n", g);
+    Dev_print <<< 1, size >>> (recvbuff[g]); /*Call the CUDA Kernel: Print vector on GPUs*/
+    cudaDeviceSynchronize();    
   }
 
   printf("\n");

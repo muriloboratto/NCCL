@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
   MPI_Comm_size (MPI_COMM_WORLD, &size); 
 
   /*Usage*/ 
-  if( (argc < 2) && (rank == 0)) {
+  if((argc < 2) && (rank == 0)) {
      printf("Usage:\n");
      printf("mpirun -np [number of processors] %s [size problem]\n", argv[0]);
      exit(-1);
