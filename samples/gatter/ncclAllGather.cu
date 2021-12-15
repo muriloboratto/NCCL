@@ -44,9 +44,8 @@ __global__ void Dev_print(float *x) {
 void print_vector(float *in, int n){
 
  for(int i=0; i < n; i++)
-  printf("%1.2f\t", in[i]);
-
- printf("\n");
+  if(in[i])
+   printf("%1.2f\t", in[i]);
 
 }/*print_vector*/
 
