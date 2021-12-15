@@ -20,8 +20,8 @@
 %   nvcc ncclReduce.cu -o ncclReduce -lnccl  
 %
 %  Execute: 
-%   ./ncclReduce <size problem>                              
-%   ./ncclReduce     4   
+%   ./ncclReduce                           
+%   
 %****************************************************************************80*/
 
 #include <cstdio>
@@ -85,14 +85,7 @@ int main(int argc, char* argv[]) {
   cudaGetDeviceCount(&nGPUs);
   int *DeviceList = (int *) malloc ( nGPUs * sizeof(int));
 
-  /*Usage*/ 
-  if( argc < 2 ) {
-     printf("Usage:\n");
-     printf("%s [size problem]\n", argv[0]);
-     exit(-1);
-  } 
-
-  int data_size = atoi(argv[1]) ;
+  int data_size = 8;
 
   double *x          = (double*)    malloc(data_size * sizeof(double));
   double *y          = (double*)    malloc(data_size * sizeof(double)); 

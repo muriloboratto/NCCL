@@ -17,8 +17,7 @@
 %   nvcc ncclBcast.cu -o ncclBcast -lnccl  
 %
 %  Execute: 
-%   ./ncclBcast <size problem>                              
-%   ./ncclBcast       8
+%   ./ncclBcast                             
 % 
 %****************************************************************************80*/
 
@@ -48,14 +47,7 @@ void print_vector(int *in, int n){
 
 int main(int argc, char* argv[]) {
 
-  /*Usage*/ 
-  if( argc < 2 ) {
-     printf("Usage:\n");
-     printf("%s [size problem]\n", argv[0]);
-     exit(-1);
-  }
-
-  int data_size = atoi(argv[1]) ;
+  int data_size = 8 ;
   int nGPUs = 0;
   cudaGetDeviceCount(&nGPUs);
   

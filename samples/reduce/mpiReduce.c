@@ -19,8 +19,7 @@
 %   mpicxx mpiReduce.c -o mpiReduce 
 %
 %  Execute: 
-%   mpirun -np 2 ./mpiReduce  <size problem>                            
-%   mpirun -np 2 ./mpiReduce      4   
+%   mpirun -np 2 ./mpiReduce                                 
 %                          
 %****************************************************************************80*/
 
@@ -46,15 +45,8 @@ int main(int argc, char* argv[]) {
   MPI_Init (&argc, &argv);                
   MPI_Comm_rank (MPI_COMM_WORLD, &rank);  
   MPI_Comm_size (MPI_COMM_WORLD, &size);  
-       
-  /*Usage*/ 
-  if((argc < 2) && (rank == 0)) {
-     printf("Usage:\n");
-     printf("mpirun -np [number of processors] %s [size problem]\n", argv[0]);
-     exit(-1);
-  }
 
-  int data_size = atoi(argv[1]);
+  int data_size = 8;
   
   double *x  = (double*) malloc(data_size * sizeof(double));
   double *y  = (double*) malloc(data_size * sizeof(double));

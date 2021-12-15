@@ -12,11 +12,11 @@
 %   Murilo Boratto <murilo.boratto 'at' fieb.org.br>
 %
 %  How to Compile:
-%   nvcc ncclSendrecv.cu -o object -lnccl  
+%   nvcc ncclSendrecv.cu -o ncclSendrecv -lnccl  
 %
 %  Execute: 
-%   ./object <size problem>
-%   ./object      8                      
+%   ./ncclSendrecv 
+%                       
 %****************************************************************************80*/
 
 #include <stdio.h>
@@ -40,14 +40,7 @@ void show_all(int *in, int n){
 
 int main(int argc, char* argv[]) {
 
-  int size = atoi(argv[1]);
-
-  /*Usage*/ 
-  if( argc < 2 ) {
-     printf("Usage:\n");
-     printf("%s [size problem]\n", argv[0]);
-     exit(-1);
-  }
+  int size = 8;
   
   /*Get current amounts number of GPU*/
   int nGPUs = 0;
