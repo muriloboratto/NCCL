@@ -24,15 +24,21 @@
 #include <string.h>
 #include <nccl.h>
 
-__global__ void kernel(int *a) { printf("%d\t", a[threadIdx.x]); }
+__global__ void kernel(int *a, int rank) { 
+
+  if(rank == 0)
+    printf("%d\t", a[threadIdx.x]); 
+      else
+        printf("%d\t", a[threadIdx.x]*10); 
+}
  
 void show_all(int *in, int n){
 
  printf("\n");
 
  for(int i=0; i < n; i++)
-  printf("%d\t", in[i]);
-
+    printf("%d\t", in[i]);
+      
  printf("\n");
 
 }/*show_all*/
@@ -92,8 +98,10 @@ int main(int argc, char* argv[]) {
   for(int g = 0; g < nGPUs; g++) {
       cudaSetDevice(DeviceList[g]);
       printf("\nThis is device %d\n", g);
-      kernel <<< 1 , size >>> (sendbuff[g]); 
-      kernel <<< 1 , size >>> (recvbuff[g]); 
+      if(g==0)
+      kernel <<< 1 , size >>> (sendbuff[g], g); 
+      else
+      kernel <<< 1 , size >>> (recvbuff[g], g); 
       cudaDeviceSynchronize();
   }
 

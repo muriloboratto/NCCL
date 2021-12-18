@@ -25,7 +25,7 @@
 int main (int argc, char *argv[]){
 
  int size = 8;
- int sendbuff[size] = {1,2,3,4,5,6,7,8};
+ int sendbuff[size]; 
  int recvbuff[size];
  int numprocessors, rank, dest, i, tag = 1000;
 
@@ -35,14 +35,25 @@ int main (int argc, char *argv[]){
  MPI_Status status;
 
   if (rank == 0){
+      
+      printf("Rank %d\n", rank);
+
+      for(int i = 0; i < size; i++)
+         printf("%d\t", sendbuff[i] = i + 1);
+
+      printf("\n");
+       
       for (dest = 1; dest < numprocessors; dest++) 
         MPI_Send(&sendbuff, size, MPI_INT, dest, tag, MPI_COMM_WORLD);  
+  
   }else{  
     
      MPI_Recv(&recvbuff, size, MPI_INT, 0, tag, MPI_COMM_WORLD, &status);
 
+     printf("Rank %d\n", rank);
+     
      for(i = 0; i < size; i++)
-       printf("%d\t", recvbuff[i]);
+       printf("%d\t", recvbuff[i]+10);
        
      printf("\n");
 
