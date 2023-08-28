@@ -1,0 +1,16 @@
+# Ignore the node_modules directory
+_*/
+
+# Ignore Logs
+logs
+*.log
+
+# Ignore the build directory
+.ipynb_checkpoints
+
+# The file containing environment variables 
+.env
+
+# Ignore IDE specific files
+.DS_Store
+i
